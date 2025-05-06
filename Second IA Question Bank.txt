@@ -1,4 +1,4 @@
-1. Define the following: i) Primary Key  ii) Foreign Key  iii) Candidate Key  iv) Super Key. Page No. 158
+1000. Define the following: i) Primary Key  ii) Foreign Key  iii) Candidate Key  iv) Super Key. Page No. 158
 2. Explain the different Relational Model constraints. Page No. 157
 3.Explain the different types of update operations on relational database. Show an example of a violation 
 of the Referential Integrity and Entity Integrity in each of the update operations.
