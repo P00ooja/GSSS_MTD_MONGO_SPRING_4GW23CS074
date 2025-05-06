@@ -1,0 +1,101 @@
+1. Define the following: i) Primary Key  ii) Foreign Key  iii) Candidate Key  iv) Super Key. Page No. 158
+2. Explain the different Relational Model constraints. Page No. 157
+3.Explain the different types of update operations on relational database. Show an example of a violation 
+of the Referential Integrity and Entity Integrity in each of the update operations.
+or Explain how the basic operations deals with constraints violations. Page No. 165
+4. Explain Unary relational operations with examples. Page No. 241
+5. Explain the relational algebra operation for set theory with examples. Page No. 246
+6. Discuss the Equijoin & Natural Join with suitable example. Page No. 253
+7. Explain the usage of Aggregate function in SQL with a example for each. Page No. 260
+8. Write an SQL query to find sum of the salaries of all the employees, the maximum salary,
+the minimum salary and the average salaryby renaming the columns in a single row table. Page No. 260
+9. With an example, illustrate various OUTER JOIN operations. Page No. 262
+10. Discuss the E.R to Relational mapping algorithm with example for each step. Page No.291
+11. Explain informal design guidelines for relational schema design. Page No. 464, 467,468 & 470.
+12. Explain the types of update anomalies in SQL with an example. Page No. 465
+13. Infer about Normalization. Define and illustrate 1 NF with an example. Page No. 475
+14. Infer about Functional dependency. Discuss 2 NF with suitable example. Page No. 481
+15. Discuss the GROUP BY and HAVING Clauses with an example for each. Page No. 218
+
+16. Consider the following Sailors-Boats-Reserves Database schema:
+Sailors (sid, sname, rating, age), Boats (bid, bname, color), Reserves (sid, bid, date) 
+Write the following queries in SQL
+
+i) Find the colors of boats reserved by Alber.
+SELECT DISTINCT B.color
+FROM Sailors S
+JOIN Reserves R ON S.sid = R.sid
+JOIN Boats B ON R.bid = B.bid
+WHERE S.sname = 'Alber';
+
+ii) Find all sailor ids of sailors who have a rating of at least 8 or reserved boat 103. 
+SELECT DISTINCT S.sid
+FROM Sailors S
+LEFT JOIN Reserves R ON S.sid = R.sid
+WHERE S.rating >= 8 OR R.bid = 103;
+
+iii) Find the names of sailors who have not reserved a red boat. 
+SELECT S.sname
+FROM Sailors S
+WHERE S.sid NOT IN (
+    SELECT R.sid
+    FROM Reserves R
+    JOIN Boats B ON R.bid = B.bid
+    WHERE B.color = 'red'
+);
+
+iv) Find the sailor ids of sailors with age over 20, who have not reserved a boat.
+SELECT S.sid
+FROM Sailors S
+WHERE S.age > 20 AND S.sid NOT IN (
+    SELECT DISTINCT R.sid
+    FROM Reserves R
+);
+
+v)Find the names of sailors who have not reserved a boat whose name contains the string 'storm'. 
+SELECT S.sname
+FROM Sailors S
+WHERE S.sid NOT IN (
+    SELECT DISTINCT R.sid
+    FROM Reserves R
+    JOIN Boats B ON R.bid = B.bid
+    WHERE B.bname LIKE '%storm%'
+);
+
+17.Consider the following Tables:
+
+Branch (Bname, Bcity, Assets)
+Account( Accno, Bname, Accbal)
+Loan (Loanno, Bname, Loanamount)
+Customer (Cname, Cstreet, Ccity)
+Depositer (Cname, Accnum)
+Borrow(Cname, Loannum)
+Write the following queries in SQL
+i) Find all loan numbers for loans made at cantonment branch with loan amounts > 20000
+SELECT Loanno
+FROM Loan
+WHERE Bname = 'cantonment' AND Loanamount > 20000;
+
+ii) Find the customers who have an account at all the branches located in ‘Mysuru’.
+SELECT D.Cname
+FROM Depositer D
+JOIN Account A ON D.Accnum = A.Accno
+WHERE A.Bname IN (
+    SELECT Bname
+    FROM Branch
+    WHERE Bcity = 'Mysuru'
+)
+GROUP BY D.Cname
+HAVING COUNT(DISTINCT A.Bname) = (
+    SELECT COUNT(*)
+    FROM Branch
+    WHERE Bcity = 'Mysuru'
+);
+
+iii) Find all the customers who do not have loan at the bank, but do have an account.
+SELECT DISTINCT D.Cname
+FROM Depositer D
+WHERE D.Cname NOT IN (
+    SELECT Cname
+    FROM Borrow
+);
